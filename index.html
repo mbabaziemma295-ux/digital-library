@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compliment Generator</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+    color: #333;
+    text-align: center;
+  }
+  #complimentBox {
+    background-color: rgba(255,255,255,0.7);
+    padding: 20px 30px;
+    border-radius: 15px;
+    max-width: 400px;
+    font-size: 22px;
+    margin-bottom: 20px;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s ease;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #ff6b6b;
+    color: white;
+    transition: 0.3s;
+  }
+  button:hover {
+    background-color: #ff8787;
+  }
+</style>
+</head>
+<body>
+
+<h1>Compliment Generator</h1>
+<div id="complimentBox">Click the button to get a compliment!</div>
+<button onclick="generateCompliment()">New Compliment</button>
+
+<script>
+const compliments = [
+  "You have a great sense of humor!",
+  "You're an awesome friend!",
+  "Your creativity is inspiring!",
+  "You light up the room!",
+  "You’re amazing just the way you are!",
+  "You have a kind heart!",
+  "Your smile is contagious!",
+  "You make a difference in people's lives!"
+];
+
+function generateCompliment() {
+  const randomIndex = Math.floor(Math.random() * compliments.length);
+  document.getElementById('complimentBox').innerText = compliments[randomIndex];
+}
+</script>
+
+</body>
+</html>
