@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Science Books Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:#fff;
+    min-height:100vh;
+}
+header{
+    text-align:center;
+    padding:30px 15px;
+}
+header h1{font-size:2.2rem;margin-bottom:10px}
+header p{opacity:.9}
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:20px;
+}
+.card{
+    background:rgba(255,255,255,0.08);
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+    transition:.3s;
+}
+.card:hover{transform:translateY(-8px);background:rgba(255,255,255,0.15)}
+.card h2{font-size:1.3rem;margin-bottom:10px;color:#ffdd57}
+.card ul{list-style:none}
+.card ul li{margin:8px 0}
+.card a{
+    color:#9be7ff;
+    text-decoration:none;
+    font-size:.95rem;
+}
+.card a:hover{text-decoration:underline;color:#fff}
+footer{
+    text-align:center;
+    padding:20px;
+    font-size:.9rem;
+    opacity:.8;
+}
+</style>
+</head>
+<body>
+<header>
+    <h1>📘 Computer Science Books & Topics</h1>
+    <p>Learn programming, software, hardware, AI, networks and more</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Programming Basics</h2>
+        <ul>
+            <li><a href="https://www.learnpython.org" target="_blank">Python Basics</a></li>
+            <li><a href="https://www.w3schools.com/c/index.php" target="_blank">C Programming</a></li>
+            <li><a href="https://www.w3schools.com/cpp/" target="_blank">C++ Programming</a></li>
+            <li><a href="https://www.w3schools.com/java/" target="_blank">Java Programming</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">JavaScript Basics</a></li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Web Development</h2>
+        <ul>
+            <li><a href="https://www.w3schools.com/html/" target="_blank">HTML Guide</a></li>
+            <li><a href="https://www.w3schools.com/css/" target="_blank">CSS Styling</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Learn" target="_blank">Web Development (MDN)</a></li>
+            <li><a href="https://react.dev/learn" target="_blank">React Basics</a></li>
+            <li><a href="https://nodejs.dev/en/learn/" target="_blank">Node.js</a></li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Computer Science Theory</h2>
+        <ul>
+            <li><a href="https://cs50.harvard.edu/x/" target="_blank">Harvard CS50</a></li>
+            <li><a href="https://www.geeksforgeeks.org/data-structures/" target="_blank">Data Structures</a></li>
+            <li><a href="https://www.geeksforgeeks.org/algorithms/" target="_blank">Algorithms</a></li>
+            <li><a href="https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/" target="_blank">MIT Algorithms</a></li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Databases</h2>
+        <ul>
+            <li><a href="https://www.w3schools.com/sql/" target="_blank">SQL Basics</a></li>
+            <li><a href="https://dev.mysql.com/doc/" target="_blank">MySQL Documentation</a></li>
+            <li><a href="https://www.postgresql.org/docs/" target="_blank">PostgreSQL</a></li>
+            <li><a href="https://www.mongodb.com/docs/" target="_blank">MongoDB</a></li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Operating Systems</h2>
+        <ul>
+            <li><a href="https://www.geeksforgeeks.org/operating-systems/" target="_blank">OS Concepts</a></li>
+            <li><a href="https://linuxjourney.com/" target="_blank">Linux Journey</a></li>
+            <li><a href="https://www.tutorialspoint.com/operating_system/index.htm" target="_blank">Operating Systems Tutorial</a></li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Computer Networks</h2>
+        <ul>
+            <li><a href="https://www.geeksforgeeks.org/computer-network-tutorials/" target="_blank">Networking Basics</a></li>
+            <li><a href="https://www.cloudflare.com/learning/" target="_blank">Internet & Networking</a></li>
+            <li><a href="https://www.ibm.com/docs/en/networkmanager" target="_blank">Network Management</a></li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Artificial Intelligence</h2>
+        <ul>
+            <li><a href="https://www.ibm.com/topics/artificial-intelligence" target="_blank">AI Introduction</a></li>
+            <li><a href="https://www.coursera.org/learn/ai-for-everyone" target="_blank">AI for Everyone</a></li>
+            <li><a href="https://www.geeksforgeeks.org/artificial-intelligence/" target="_blank">AI Tutorials</a></li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Cyber Security</h2>
+        <ul>
+            <li><a href="https://www.kaspersky.com/resource-center/definitions/what-is-cyber-security" target="_blank">Cyber Security Basics</a></li>
+            <li><a href="https://www.geeksforgeeks.org/cyber-security/" target="_blank">Cyber Security Tutorials</a></li>
+            <li><a href="https://owasp.org/www-project-top-ten/" target="_blank">OWASP Top 10</a></li>
+        </ul>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Computer Science Digital Library | Learn • Practice • Grow
+</footer>
+</body>
+</html>

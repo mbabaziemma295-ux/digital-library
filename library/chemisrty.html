@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry Books Library</title>
+
+    <!-- Fonts: Poppins for UI, JetBrains Mono for technical data -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS VARIABLES & RESET (MATCHING PREMIUM THEME) --- */
+        :root {
+            --bg-deep: #0f172a;       /* Deep Blue/Black */
+            --bg-surface: #1e293b;    /* Dark Navy */
+            --primary: #38bdf8;       /* Cyan */
+            --secondary: #818cf8;     /* Indigo */
+            --accent: #2dd4bf;        /* Teal */
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --shadow-lg: 0 10px 40px -10px rgba(0,0,0,0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- BACKGROUND ANIMATION CANVAS --- */
+        #chem-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 100px 20px 50px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 10px 30px rgba(56, 189, 248, 0.2);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 40px;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 60px;
+            padding: 8px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: var(--shadow-lg);
+            animation: fadeInUp 1s ease-out 0.6s backwards;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--bg-deep);
+            background: var(--primary);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* --- MAIN CONTAINER --- */
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px 100px;
+        }
+
+        /* --- SECTION STYLING --- */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            margin-top: 60px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--glass-border);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+        }
+
+        .section-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title span {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.3));
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        /* --- BOOK GRID --- */
+        .books {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* --- BOOK CARD --- */
+        .book {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            transform-style: preserve-3d;
+            opacity: 0;
+            transform: translateY(30px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 180px;
+        }
+
+        .book.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .book:hover {
+            transform: translateY(-10px) rotateX(2deg);
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 0 20px 50px -12px rgba(56, 189, 248, 0.15);
+            background: rgba(30, 41, 59, 0.9);
+        }
+
+        /* Decorative background icon (Watermark) */
+        .book::before {
+            content: attr(data-icon);
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 8rem;
+            opacity: 0.03;
+            transform: rotate(-15deg);
+            font-family: 'JetBrains Mono', monospace;
+            pointer-events: none;
+            transition: all 0.5s ease;
+            color: var(--text-main);
+        }
+
+        .book:hover::before {
+            opacity: 0.06;
+            top: -30px;
+            right: -30px;
+            color: var(--primary);
+        }
+
+        .book-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            position: relative;
+            z-index: 1;
+            line-height: 1.4;
+        }
+
+        /* --- BUTTONS --- */
+        .book a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0.05));
+            border: 1px solid var(--glass-border);
+            color: var(--primary);
+            transition: all 0.3s ease;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .book a:hover {
+            background: var(--primary);
+            color: var(--bg-deep);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 50px;
+            backdrop-filter: blur(5px);
+        }
+
+        footer span {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* --- ANIMATION KEYFRAMES --- */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            nav { width: 95%; top: 10px; }
+            .books { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Background Animation Canvas -->
+<canvas id="chem-canvas"></canvas>
+
+<section class="hero">
+    <h1>⚗️ Chemistry Books Library</h1>
+    <p>Comprehensive collection of free Chemistry textbooks. From Atoms to Organic Reactions.</p>
+</section>
+
+<!-- NAVIGATION -->
+<nav>
+    <a href="#secondary">Secondary</a>
+    <a href="#university">University</a>
+    <a href="#organic">Organic</a>
+    <a href="#other">Other</a>
+</nav>
+
+<main>
+
+    <!-- SECONDARY SECTION -->
+    <div class="section-title" id="secondary">
+        <span>🎓</span>
+        <h2>Secondary Level Chemistry</h2>
+    </div>
+    <div class="books secondary">
+        <div class="book" data-icon="9">
+            <div class="book-title">NCERT Chemistry Class 9 (PDF)</div>
+            <a href="https://ncert.nic.in/textbook/pdf/kech101.pdf" target="_blank">
+                <span>📖 Read / Download</span>
+            </a>
+        </div>
+
+        <div class="book" data-icon="10">
+            <div class="book-title">NCERT Chemistry Class 10 (PDF)</div>
+            <a href="https://ncert.nic.in/textbook/pdf/lech101.pdf" target="_blank">
+                <span>📖 Read / Download</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- UNIVERSITY SECTION -->
+    <div class="section-title" id="university">
+        <span>🏫</span>
+        <h2>University Level Chemistry</h2>
+    </div>
+    <div class="books university">
+        <div class="book" data-icon="ΔH">
+            <div class="book-title">Physical Chemistry – Free PDF</div>
+            <a href="https://www.freebookcentre.net/Chemistry_Physical.html" target="_blank">
+                <span>📖 Read Online</span>
+            </a>
+        </div>
+
+        <div class="book" data-icon="Fe">
+            <div class="book-title">Inorganic Chemistry – Free PDF</div>
+            <a href="https://www.freebookcentre.net/Chemistry_Inorganic.html" target="_blank">
+                <span>📖 Read Online</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- ORGANIC CHEMISTRY SECTION -->
+    <div class="section-title" id="organic">
+        <span>🧪</span>
+        <h2>Organic Chemistry</h2>
+    </div>
+    <div class="books organic">
+        <div class="book" data-icon="C₆H₆">
+            <div class="book-title">Organic Chemistry by Morrison & Boyd</div>
+            <a href="https://archive.org/details/OrganicChemistryMorrisonBoyd" target="_blank">
+                <span>📖 Read Online</span>
+            </a>
+        </div>
+
+        <div class="book" data-icon="C-C">
+            <div class="book-title">Organic Chemistry – Open Text</div>
+            <a href="https://archive.org/details/OrganicChemistryOpenText" target="_blank">
+                <span>📖 Read Online</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- OTHER SECTION -->
+    <div class="section-title" id="other">
+        <span>📚</span>
+        <h2>Other Chemistry Books</h2>
+    </div>
+    <div class="books other">
+        <div class="book" data-icon="H₂O">
+            <div class="book-title">General Chemistry – Free PDF</div>
+            <a href="https://www.freebookcentre.net/Chemistry_General.html" target="_blank">
+                <span>📖 Read Online</span>
+            </a>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    © 2026 <span>Chemistry Books Library</span> | Learn Chemistry Free
+</footer>
+
+<script>
+    /**
+     * ANIMATION ENGINE (Adapted for Chemistry Theme)
+     * Uses a particle system with Chemistry symbols floating upward.
+     */
+    
+    const canvas = document.getElementById('chem-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    let particles = [];
+
+    // Chemistry symbols and elements
+    const symbols = ['⚗️', '🧪', '⚛️', 'H₂O', 'Na', 'Cl', 'C', 'O', 'Fe', 'Au', 'Ag', 'pH', 'Δ', '→', '⚡'];
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+
+    class Particle {
+        constructor() {
+            this.reset(true);
+        }
+
+        reset(initial = false) {
+            this.x = Math.random() * width;
+            this.y = initial ? Math.random() * height : height + 50;
+            
+            this.speed = 0.5 + Math.random() * 2.0; 
+            this.symbol = symbols[Math.floor(Math.random() * symbols.length)];
+            this.size = 14 + Math.random() * 20;
+            this.opacity = 0.03 + Math.random() * 0.12; 
+            this.drift = (Math.random() - 0.5) * 0.8; 
+        }
+
+        update() {
+            this.y -= this.speed;
+            this.x += this.drift;
+
+            if (this.y < -50) {
+                this.reset();
+            }
+        }
+
+        draw() {
+            ctx.font = `${this.size}px 'JetBrains Mono'`;
+            // Using the Cyan/Blue palette
+            ctx.fillStyle = `rgba(56, 189, 248, ${this.opacity})`; 
+            ctx.fillText(this.symbol, this.x, this.y);
+        }
+    }
+
+    function initParticles() {
+        particles = [];
+        // Calculate particle count based on screen width
+        const particleCount = Math.floor(window.innerWidth / 18); 
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        
+        requestAnimationFrame(animate);
+    }
+
+    // --- SCROLL ANIMATIONS ---
+    function setupScrollAnimations() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        const elementsToAnimate = document.querySelectorAll('.section-title, .book');
+        elementsToAnimate.forEach(el => observer.observe(el));
+    }
+
+    // --- EVENT LISTENERS ---
+    window.addEventListener('resize', () => {
+        resize();
+        initParticles();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        resize();
+        initParticles();
+        animate();
+        setupScrollAnimations();
+    });
+
+</script>
+</body>
+</html>

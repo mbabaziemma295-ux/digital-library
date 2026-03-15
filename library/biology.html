@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biology Books Library</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+/* --- CSS VARIABLES & RESET --- */
+:root {
+    /* Biology Theme: Nature (Green) & DNA (Violet) */
+    --bg-deep: #3a460f; /* Deep Forest */
+    --bg-surface: #0ddd30; 
+    --primary: #4ade80;   /* Bright Green */
+    --secondary: #a78bfa; /* Soft Violet */
+    --accent: #fb7185;    /* Rose/Pink (Health) */
+    
+    --glass-bg: rgba(16, 41, 12, 0.6); /* Tinted glass */
+    --glass-border: rgba(74, 222, 128, 0.15);
+    --text-main: #f0fdf4;
+    --text-muted: #bbf7d0;
+    --shadow-lg: 0 10px 40px -10px rgba(0,0,0,0.6);
+    --card-hover-transform: translateY(-8px);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-deep);
+    color: var(--text-main);
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* --- BACKGROUND ANIMATION CANVAS --- */
+#bio-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    /* Deep organic gradient */
+    background: radial-gradient(circle at 50% 50%, #064e3b 0%, #022c22 100%);
+}
+
+/* --- HERO SECTION --- */
+.hero {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 100px 20px 50px;
+    position: relative;
+}
+
+.hero h1 {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 700;
+    /* Gradient: Nature to Science */
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+    text-shadow: 0 10px 30px rgba(74, 222, 128, 0.2);
+    animation: fadeInDown 1s ease-out;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin-bottom: 40px;
+    animation: fadeInUp 1s ease-out 0.3s backwards;
+}
+
+/* --- NAVIGATION --- */
+nav {
+    position: sticky;
+    top: 20px;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 60px;
+    padding: 10px;
+    background: rgba(2, 44, 34, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: var(--shadow-lg);
+    animation: fadeInUp 1s ease-out 0.6s backwards;
+}
+
+nav a {
+    padding: 12px 28px;
+    border-radius: 30px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+nav a:hover, nav a.active {
+    color: var(--bg-deep);
+    background: var(--primary);
+    box-shadow: 0 0 20px rgba(74, 222, 128, 0.4);
+    transform: scale(1.05);
+}
+
+/* --- MAIN CONTAINER --- */
+main {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px 100px;
+}
+
+/* --- SECTION STYLING --- */
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 40px;
+    margin-top: 80px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--glass-border);
+    opacity: 0; /* For scroll animation */
+    transform: translateY(20px);
+    transition: all 0.8s ease;
+}
+
+.section-title.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.section-title span {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, var(--text-main), var(--text-muted));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.section-title h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
+}
+
+/* --- BOOK GRID --- */
+.books {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+/* --- BOOK CARD (Glassmorphism & 3D) --- */
+.book {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s ease;
+    transform-style: preserve-3d;
+    opacity: 0; /* For scroll animation */
+    transform: translateY(30px);
+}
+
+.book.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.book:hover {
+    transform: translateY(-10px) rotateX(2deg);
+    border-color: rgba(74, 222, 128, 0.4);
+    box-shadow: 0 20px 50px -12px rgba(74, 222, 128, 0.2);
+    background: rgba(6, 78, 59, 0.85);
+}
+
+/* Decorative background icon */
+.book::before {
+    content: attr(data-icon);
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 10rem;
+    opacity: 0.04;
+    transform: rotate(-15deg);
+    font-family: 'JetBrains Mono', monospace;
+    pointer-events: none;
+    transition: all 0.5s ease;
+}
+
+.book:hover::before {
+    opacity: 0.08;
+    top: -30px;
+    right: -30px;
+}
+
+.book-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-main);
+    position: relative;
+    z-index: 1;
+}
+
+.book-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    font-family: 'JetBrains Mono', monospace;
+    opacity: 0.8;
+}
+
+/* --- BUTTONS --- */
+.book a, .btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    background: linear-gradient(135deg, rgba(74, 222, 128, 0.1), rgba(74, 222, 128, 0.05));
+    border: 1px solid var(--glass-border);
+    color: var(--primary);
+    transition: all 0.3s ease;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.book a:hover {
+    background: var(--primary);
+    color: var(--bg-deep);
+    box-shadow: 0 0 25px rgba(74, 222, 128, 0.4);
+}
+
+/* --- FOOTER --- */
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    background: rgba(2, 44, 34, 0.95);
+    border-top: 1px solid var(--glass-border);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 50px;
+}
+
+footer span {
+    color: var(--secondary);
+}
+
+/* --- ANIMATION KEYFRAMES --- */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 768px) {
+    .hero h1 { font-size: 2.5rem; }
+    nav {
+        width: 90%;
+        flex-wrap: wrap;
+        top: 10px;
+    }
+    .books { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background Animation Canvas -->
+<canvas id="bio-canvas"></canvas>
+
+<section class="hero">
+    <h1>🧬 Biology Books Library</h1>
+    <p>Open Access Biological Sciences • Anatomy, Botany, & Zoology</p>
+</section>
+
+<!-- NAVIGATION -->
+<nav>
+    <a href="#secondary">Secondary School</a>
+    <a href="#university">University</a>
+    <a href="#anatomy">Human Anatomy</a>
+</nav>
+
+<main>
+
+<!-- SECONDARY SCHOOL -->
+<div class="section-title" id="secondary">
+    <span>🌱</span>
+    <h2>Secondary School Biology</h2>
+</div>
+<div class="books secondary">
+    <div class="book" data-icon="9">
+        <div class="book-title">Science Textbook</div>
+        <div class="book-subtitle">NCERT Class 9 (Biology Chapters)</div>
+        <a href="https://ncert.nic.in/textbook/pdf/iesc101.pdf" target="_blank">
+            <span>📖 Read PDF Online</span>
+        </a>
+    </div>
+    <div class="book" data-icon="10">
+        <div class="book-title">Science Textbook</div>
+        <div class="book-subtitle">NCERT Class 10 (Biology Chapters)</div>
+        <a href="https://ncert.nic.in/textbook/pdf/iess101.pdf" target="_blank">
+            <span>📖 Read PDF Online</span>
+        </a>
+    </div>
+    <div class="book" data-icon="11">
+        <div class="book-title">Biology Textbook</div>
+        <div class="book-subtitle">NCERT Class 11</div>
+        <a href="https://ncert.nic.in/textbook/pdf/lebo101.pdf" target="_blank">
+            <span>📖 Read PDF Online</span>
+        </a>
+    </div>
+    <div class="book" data-icon="12">
+        <div class="book-title">Biology Textbook</div>
+        <div class="book-subtitle">NCERT Class 12</div>
+        <a href="https://ncert.nic.in/textbook/pdf/lebo102.pdf" target="_blank">
+            <span>📖 Read PDF Online</span>
+        </a>
+    </div>
+</div>
+
+<!-- UNIVERSITY LEVEL -->
+<div class="section-title" id="university">
+    <span>🔬</span>
+    <h2>University & Research</h2>
+</div>
+<div class="books university">
+    <div class="book" data-icon="Cell">
+        <div class="book-title">Concepts of Biology</div>
+        <div class="book-subtitle">OpenStax (Introductory)</div>
+        <a href="https://openstax.org/details/books/concepts-biology" target="_blank">
+            <span>🧬 Read / Download</span>
+        </a>
+    </div>
+    <div class="book" data-icon="Bio2">
+        <div class="book-title">Biology 2e</div>
+        <div class="book-subtitle">OpenStax (Comprehensive)</div>
+        <a href="https://openstax.org/details/books/biology-2e" target="_blank">
+            <span>🧬 Read / Download</span>
+        </a>
+    </div>
+    <div class="book" data-icon="Mic">
+        <div class="book-title">Microbiology</div>
+        <div class="book-subtitle">OpenStax</div>
+        <a href="https://openstax.org/details/books/microbiology" target="_blank">
+            <span>🦠 Read / Download</span>
+        </a>
+    </div>
+</div>
+
+<!-- ANATOMY & HEALTH -->
+<div class="section-title" id="anatomy">
+    <span>🫀</span>
+    <h2>Anatomy & Physiology</h2>
+</div>
+<div class="books other">
+    <div class="book" data-icon="Ana">
+        <div class="book-title">Anatomy and Physiology</div>
+        <div class="book-subtitle">OpenStax</div>
+        <a href="https://openstax.org/details/books/anatomy-and-physiology" target="_blank">
+            <span>❤️ Read / Download</span>
+        </a>
+    </div>
+    <div class="book" data-icon="Nu">
+        <div class="book-title">Nutrition Science</div>
+        <div class="book-subtitle">OpenStax</div>
+        <a href="https://openstax.org/details/books/nutrition-science" target="_blank">
+            <span>🍎 Read / Download</span>
+        </a>
+    </div>
+</div>
+
+</main>
+
+<footer>
+    © 2026 Biology Books Library • <span>Study Life Sciences</span>
+</footer>
+
+<script>
+    /**
+     * ANIMATION ENGINE
+     * Handles the floating biological symbols background
+     * and scroll reveal interactions.
+     */
+    
+    // --- Canvas Animation ---
+    const canvas = document.getElementById('bio-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    let particles = [];
+
+    // Biology/Cellular symbols
+    const symbols = ['♠', '♥', '♦', '♣', '⚥', '☀', '⚕', '∞', '≋', '∿'];
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+
+    class Particle {
+        constructor() {
+            this.reset();
+            // Random start y to fill screen initially
+            this.y = Math.random() * height;
+        }
+
+        reset() {
+            this.x = Math.random() * width;
+            this.y = height + 50;
+            this.speed = 0.5 + Math.random() * 1.5;
+            this.symbol = symbols[Math.floor(Math.random() * symbols.length)];
+            this.size = 14 + Math.random() * 20;
+            this.opacity = 0.05 + Math.random() * 0.15;
+            this.drift = (Math.random() - 0.5) * 0.5;
+            
+            // Randomly assign a color theme: Green (Plant) or Purple (Animal/DNA)
+            this.isPlant = Math.random() > 0.5;
+        }
+
+        update() {
+            this.y -= this.speed;
+            this.x += this.drift;
+
+            if (this.y < -50) {
+                this.reset();
+            }
+        }
+
+        draw() {
+            ctx.font = `${this.size}px 'JetBrains Mono'`;
+            
+            // Dynamic coloring based on Plant/Animal theme
+            if (this.isPlant) {
+                ctx.fillStyle = `rgba(74, 222, 128, ${this.opacity})`; // Vital Green
+            } else {
+                ctx.fillStyle = `rgba(167, 139, 250, ${this.opacity})`; // Violet
+            }
+            
+            ctx.fillText(this.symbol, this.x, this.y);
+        }
+    }
+
+    function initParticles() {
+        particles = [];
+        const particleCount = Math.min(window.innerWidth / 15, 60); // Responsive count
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        requestAnimationFrame(animate);
+    }
+
+    // --- Intersection Observer for Scroll Animations ---
+    function setupScrollAnimations() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        const elementsToAnimate = document.querySelectorAll('.section-title, .book');
+        elementsToAnimate.forEach(el => observer.observe(el));
+    }
+
+    // --- Initialization ---
+    window.addEventListener('resize', () => {
+        resize();
+        initParticles();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        resize();
+        initParticles();
+        animate();
+        setupScrollAnimations();
+    });
+
+</script>
+</body>
+</html>

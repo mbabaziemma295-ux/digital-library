@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mathematics Books Library</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+/* --- CSS VARIABLES & RESET --- */
+:root {
+    --bg-deep: #0f172a;
+    --bg-surface: #1e293b;
+    --primary: #38bdf8; /* Cyan/Blue */
+    --secondary: #818cf8; /* Indigo */
+    --accent: #2dd4bf; /* Teal */
+    --glass-bg: rgba(30, 41, 59, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --shadow-lg: 0 10px 40px -10px rgba(0,0,0,0.5);
+    --card-hover-transform: translateY(-8px);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-deep);
+    color: var(--text-main);
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* --- BACKGROUND ANIMATION CANVAS --- */
+#math-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+}
+
+/* --- HERO SECTION --- */
+.hero {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 100px 20px 50px;
+    position: relative;
+}
+
+.hero h1 {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+    text-shadow: 0 10px 30px rgba(56, 189, 248, 0.2);
+    animation: fadeInDown 1s ease-out;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin-bottom: 40px;
+    animation: fadeInUp 1s ease-out 0.3s backwards;
+}
+
+/* --- NAVIGATION --- */
+nav {
+    position: sticky;
+    top: 20px;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 60px;
+    padding: 10px;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: var(--shadow-lg);
+    animation: fadeInUp 1s ease-out 0.6s backwards;
+    flex-wrap: wrap;
+}
+
+nav a {
+    padding: 12px 28px;
+    border-radius: 30px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+nav a:hover, nav a.active {
+    color: var(--bg-deep);
+    background: var(--primary);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    transform: scale(1.05);
+}
+
+/* --- MAIN CONTAINER --- */
+main {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px 100px;
+}
+
+/* --- SECTION STYLING --- */
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 40px;
+    margin-top: 80px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--glass-border);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease;
+}
+
+.section-title.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.section-title span {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, var(--text-main), var(--text-muted));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.section-title h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
+}
+
+/* --- BOOK GRID --- */
+.books {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* --- BOOK CARD (Glassmorphism & 3D) --- */
+.book {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 25px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s ease;
+    transform-style: preserve-3d;
+    opacity: 0;
+    transform: translateY(30px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.book.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.book:hover {
+    transform: translateY(-10px) rotateX(2deg);
+    border-color: rgba(56, 189, 248, 0.3);
+    box-shadow: 0 20px 50px -12px rgba(56, 189, 248, 0.15);
+    background: rgba(30, 41, 59, 0.9);
+}
+
+/* Decorative background icon */
+.book::before {
+    content: attr(data-icon);
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 10rem;
+    opacity: 0.03;
+    transform: rotate(-15deg);
+    font-family: 'JetBrains Mono', monospace;
+    pointer-events: none;
+    transition: all 0.5s ease;
+}
+
+.book:hover::before {
+    opacity: 0.06;
+    top: -30px;
+    right: -30px;
+}
+
+.book-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--text-main);
+    position: relative;
+    z-index: 1;
+    min-height: 60px; /* Align buttons */
+}
+
+/* --- BUTTONS --- */
+.book a, .btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0.05));
+    border: 1px solid var(--glass-border);
+    color: var(--primary);
+    transition: all 0.3s ease;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.book a:hover {
+    background: var(--primary);
+    color: var(--bg-deep);
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+}
+
+/* --- FOOTER --- */
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    background: rgba(15, 23, 42, 0.9);
+    border-top: 1px solid var(--glass-border);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 50px;
+}
+
+footer span {
+    color: var(--primary);
+}
+
+/* --- ANIMATION KEYFRAMES --- */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 768px) {
+    .hero h1 { font-size: 2.5rem; }
+    nav { width: 90%; flex-wrap: wrap; top: 10px; }
+    .books { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background Animation Canvas -->
+<canvas id="math-canvas"></canvas>
+
+<section class="hero">
+    <h1>📐 Mathematics Books Library</h1>
+    <p>Extensive collection of Free PDF Math Books • From Algebra to Topology</p>
+</section>
+
+<!-- NAVIGATION -->
+<nav>
+    <a href="#secondary">High School</a>
+    <a href="#university">University Core</a>
+    <a href="#advanced">Advanced</a>
+</nav>
+
+<main>
+
+<!-- SECONDARY / HIGH SCHOOL -->
+<div class="section-title" id="secondary">
+    <span>🎓</span>
+    <h2>High School & Pre-University</h2>
+</div>
+<div class="books secondary">
+    <div class="book" data-icon="∑">
+        <div class="book-title">Prealgebra (2e)</div>
+        <a href="https://openstax.org/details/books/prealgebra-2e" target="_blank">📘 Read PDF</a>
+    </div>
+    <div class="book" data-icon="x">
+        <div class="book-title">Elementary Algebra</div>
+        <a href="https://openstax.org/details/books/elementary-algebra" target="_blank">📘 Read PDF</a>
+    </div>
+    <div class="book" data-icon="△">
+        <div class="book-title">Geometry (CK-12)</div>
+        <a href="https://www.ck12.org/c/geometry/" target="_blank">📘 Read Online</a>
+    </div>
+    <div class="book" data-icon="θ">
+        <div class="book-title">Algebra and Trigonometry</div>
+        <a href="https://openstax.org/details/books/algebra-and-trigonometry" target="_blank">📘 Read PDF</a>
+    </div>
+    <div class="book" data-icon="ln">
+        <div class="book-title">Precalculus (2e)</div>
+        <a href="https://openstax.org/details/books/precalculus-2e" target="_blank">📘 Read PDF</a>
+    </div>
+    <div class="book" data-icon="π">
+        <div class="book-title">Trigonometry (Michael Corral)</div>
+        <a href="https://www.mecmath.net/trig/" target="_blank">📘 Read PDF</a>
+    </div>
+</div>
+
+<!-- UNIVERSITY CORE -->
+<div class="section-title" id="university">
+    <span>🏫</span>
+    <h2>University Core Curriculum</h2>
+</div>
+<div class="books university">
+    <div class="book" data-icon="∫">
+        <div class="book-title">Calculus Volume 1</div>
+        <a href="https://openstax.org/details/books/calculus-volume-1" target="_blank">📈 Read PDF</a>
+    </div>
+    <div class="book" data-icon="∫">
+        <div class="book-title">Calculus Volume 2</div>
+        <a href="https://openstax.org/details/books/calculus-volume-2" target="_blank">📈 Read PDF</a>
+    </div>
+    <div class="book" data-icon="∫">
+        <div class="book-title">Calculus Volume 3</div>
+        <a href="https://openstax.org/details/books/calculus-volume-3" target="_blank">📈 Read PDF</a>
+    </div>
+    <div class="book" data-icon="y'">
+        <div class="book-title">Differential Equations</div>
+        <a href="https://openstax.org/details/books/differential-equations" target="_blank">📉 Read PDF</a>
+    </div>
+    <div class="book" data-icon="Ax">
+        <div class="book-title">Linear Algebra (Jim Hefferon)</div>
+        <a href="https://joshua.smcvt.edu/linearalgebra/" target="_blank">📊 Read PDF</a>
+    </div>
+    <div class="book" data-icon="P(x)">
+        <div class="book-title">Intro to Statistics</div>
+        <a href="https://openstax.org/details/books/introductory-statistics" target="_blank">📊 Read PDF</a>
+    </div>
+    <div class="book" data-icon="∈">
+        <div class="book-title">Discrete Mathematics</div>
+        <a href="https://open.umn.edu/opentextbooks/textbooks/discrete-mathematics-an-open-introduction" target="_blank">📝 Read PDF</a>
+    </div>
+    <div class="book" data-icon="√">
+        <div class="book-title">Mathematical Reasoning</div>
+        <a href="https://www.apexcalculus.com/" target="_blank">🧠 Read Online</a>
+    </div>
+</div>
+
+<!-- ADVANCED / OTHER -->
+<div class="section-title" id="advanced">
+    <span>📚</span>
+    <h2>Advanced Mathematics & Pure Math</h2>
+</div>
+<div class="books advanced">
+    <div class="book" data-icon="G">
+        <div class="book-title">Abstract Algebra</div>
+        <a href="http://abstract.ups.edu/" target="_blank">🔮 Read PDF</a>
+    </div>
+    <div class="book" data-icon="ℝ">
+        <div class="book-title">Real Analysis (Lebl)</div>
+        <a href="https://www.jirka.org/ra/" target="_blank">∞ Read PDF</a>
+    </div>
+    <div class="book" data-icon="ℂ">
+        <div class="book-title">Complex Analysis</div>
+        <a href="https://math.libretexts.org/Bookshelves/Analysis/Book%3A_Complex_Variables_with_Applications_(Orloff)" target="_blank">ℂ Read Online</a>
+    </div>
+    <div class="book" data-icon="≠">
+        <div class="book-title">Number Theory (Andrews)</div>
+        <a href="https://archive.org/details/NumberTheory" target="_blank">ℕ Read PDF</a>
+    </div>
+    <div class="book" data-icon="∀">
+        <div class="book-title">Logic and Proof</div>
+        <a href="https://textbooks.opensuny.org/logic-and-proof/" target="_blank">∴ Read PDF</a>
+    </div>
+    <div class="book" data-icon="∇">
+        <div class="book-title">Vector Calculus</div>
+        <a href="https://www.mecmath.net/" target="_blank">🌀 Read PDF</a>
+    </div>
+    <div class="book" data-icon="lim">
+        <div class="book-title">Precalculus (Stitz & Zeager)</div>
+        <a href="https://stitz-zeager.com/" target="_blank">📐 Read PDF</a>
+    </div>
+</div>
+
+</main>
+
+<footer>
+    © 2026 Mathematics Books Library • <span>Learn Mathematics Free</span>
+</footer>
+
+<script>
+    /**
+     * ANIMATION ENGINE
+     * Handles the floating mathematical symbols background
+     * and scroll reveal interactions.
+     */
+    
+    // --- Canvas Animation ---
+    const canvas = document.getElementById('math-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    let particles = [];
+
+    // Expanded Math symbols
+    const symbols = ['π', '∑', '∫', '∞', '√', '∆', 'θ', 'λ', '÷', '≈', '≠', '∫', '∂', 'ℝ', 'ℂ', '∀', '∃', '∅', '∈', '⊂'];
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+
+    class Particle {
+        constructor() {
+            this.reset();
+            this.y = Math.random() * height;
+        }
+
+        reset() {
+            this.x = Math.random() * width;
+            this.y = height + 50;
+            this.speed = 0.5 + Math.random() * 1.5;
+            this.symbol = symbols[Math.floor(Math.random() * symbols.length)];
+            this.size = 14 + Math.random() * 20;
+            this.opacity = 0.05 + Math.random() * 0.15;
+            this.drift = (Math.random() - 0.5) * 0.5;
+        }
+
+        update() {
+            this.y -= this.speed;
+            this.x += this.drift;
+
+            if (this.y < -50) {
+                this.reset();
+            }
+        }
+
+        draw() {
+            ctx.font = `${this.size}px 'JetBrains Mono'`;
+            ctx.fillStyle = `rgba(148, 163, 184, ${this.opacity})`; // Slate color
+            ctx.fillText(this.symbol, this.x, this.y);
+        }
+    }
+
+    function initParticles() {
+        particles = [];
+        const particleCount = Math.min(window.innerWidth / 12, 80); // More particles for denser look
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        requestAnimationFrame(animate);
+    }
+
+    // --- Intersection Observer for Scroll Animations ---
+    function setupScrollAnimations() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        const elementsToAnimate = document.querySelectorAll('.section-title, .book');
+        elementsToAnimate.forEach(el => observer.observe(el));
+    }
+
+    // --- Initialization ---
+    window.addEventListener('resize', () => {
+        resize();
+        initParticles();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        resize();
+        initParticles();
+        animate();
+        setupScrollAnimations();
+    });
+
+</script>
+</body>
+</html>
