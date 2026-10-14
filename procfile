@@ -1,0 +1,1 @@
+web: python pyth.py

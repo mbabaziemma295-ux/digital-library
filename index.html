@@ -331,7 +331,7 @@ footer { background-color: #050505; padding: 40px 20px; text-align: center; bord
 
 
 /* ── CLASSICS SECTION ───────────────────────────────── */
-.classics-grid { max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
+.classics-grid { max-width: 1200px; margin: 0 auto; padding: 0 24px 80px; }
 .classics-row-label {
     font-family: 'Poppins', sans-serif;
     font-size: 0.8rem;
@@ -339,62 +339,96 @@ footer { background-color: #050505; padding: 40px 20px; text-align: center; bord
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: tomato;
-    margin-bottom: 14px;
+    margin-bottom: 18px;
     padding-left: 4px;
-}
-.classics-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 12px;
-    margin-bottom: 8px;
-}
-.classic-card {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+}
+.classics-row-label::after { content:''; flex:1; height:1px; background:rgba(255,99,71,0.2); }
+.classics-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 18px;
+    margin-bottom: 12px;
+}
+/* NEW CARD DESIGN — tall with image area */
+.classic-card {
+    display: flex;
+    flex-direction: column;
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 14px;
+    border-radius: 16px;
+    overflow: hidden;
     text-decoration: none;
     color: #f0f0f0;
-    transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 .classic-card:hover {
-    background: rgba(255,99,71,0.08);
-    border-color: rgba(255,99,71,0.35);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,99,71,0.4);
+    transform: translateY(-5px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.5);
 }
-.cc-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
+.cc-image-area {
+    width: 100%;
+    height: 140px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: 52px;
     flex-shrink: 0;
+    position: relative;
 }
-.cc-info { flex: 1; min-width: 0; }
+.cc-body {
+    padding: 14px 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
 .cc-title {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: #f0f0f0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.cc-author { font-size: 0.75rem; color: #888; margin-top: 2px; }
-.cc-read {
-    font-size: 0.75rem;
+    font-size: 0.95rem;
     font-weight: 700;
-    color: tomato;
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.2s;
+    color: #f0f0f0;
+    line-height: 1.3;
 }
-.classic-card:hover .cc-read { opacity: 1; }
+.cc-author { font-size: 0.75rem; color: #888; }
+.cc-desc {
+    font-size: 0.78rem;
+    color: #aaa;
+    line-height: 1.6;
+    flex: 1;
+    margin-top: 4px;
+}
+.cc-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+}
+.cc-btn-read {
+    flex: 1;
+    padding: 8px 10px;
+    background: rgba(255,99,71,0.15);
+    border: 1px solid rgba(255,99,71,0.35);
+    border-radius: 8px;
+    color: tomato;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+}
+.cc-btn-read:hover { background: rgba(255,99,71,0.3); color: #fff; }
+
+
+
 
 </style>
 </head>
@@ -472,106 +506,214 @@ footer { background-color: #050505; padding: 40px 20px; text-align: center; bord
   <!-- ROW: NOVELS -->
   <div class="classics-row-label">📖 Classic Novels</div>
   <div class="classics-row">
-    <a href="https://www.gutenberg.org/files/1342/1342-h/1342-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#667eea,#764ba2)">📕</div>
-      <div class="cc-info"><div class="cc-title">Pride and Prejudice</div><div class="cc-author">Jane Austen · 1813</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
-    <a href="https://www.gutenberg.org/files/1661/1661-h/1661-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#f093fb,#f5576c)">🔍</div>
-      <div class="cc-info"><div class="cc-title">Sherlock Holmes</div><div class="cc-author">Arthur Conan Doyle · 1892</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
-    <a href="https://www.gutenberg.org/files/1184/1184-h/1184-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">⚔️</div>
-      <div class="cc-info"><div class="cc-title">Count of Monte Cristo</div><div class="cc-author">Alexandre Dumas · 1844</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
-    <a href="https://www.gutenberg.org/files/1260/1260-h/1260-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#fa709a,#fee140)">🌹</div>
-      <div class="cc-info"><div class="cc-title">Jane Eyre</div><div class="cc-author">Charlotte Brontë · 1847</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
-    <a href="https://www.gutenberg.org/files/84/84-h/84-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb)">⚡</div>
-      <div class="cc-info"><div class="cc-title">Frankenstein</div><div class="cc-author">Mary Shelley · 1818</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
-    <a href="https://www.gutenberg.org/files/174/174-h/174-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#fccb90,#d57eeb)">🎭</div>
-      <div class="cc-info"><div class="cc-title">The Picture of Dorian Gray</div><div class="cc-author">Oscar Wilde · 1890</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
-    <a href="https://www.gutenberg.org/files/135/135-h/135-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">🗼</div>
-      <div class="cc-info"><div class="cc-title">Les Misérables</div><div class="cc-author">Victor Hugo · 1862</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
-    <a href="https://www.gutenberg.org/files/64317/64317-h/64317-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#f7971e,#ffd200)">🥂</div>
-      <div class="cc-info"><div class="cc-title">The Great Gatsby</div><div class="cc-author">F. Scott Fitzgerald · 1925</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#667eea,#764ba2)">📕</div>
+      <div class="cc-body">
+        <div class="cc-title">Pride and Prejudice</div>
+        <div class="cc-author">Jane Austen · 1813</div>
+        <div class="cc-desc">A timeless romantic story of love and society in Regency England.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/1342/1342-h/1342-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#f093fb,#f5576c)">🔍</div>
+      <div class="cc-body">
+        <div class="cc-title">Sherlock Holmes</div>
+        <div class="cc-author">Arthur Conan Doyle · 1892</div>
+        <div class="cc-desc">Twelve gripping detective stories featuring the legendary Sherlock Holmes.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/1661/1661-h/1661-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">⚔️</div>
+      <div class="cc-body">
+        <div class="cc-title">Count of Monte Cristo</div>
+        <div class="cc-author">Alexandre Dumas · 1844</div>
+        <div class="cc-desc">An epic tale of betrayal, imprisonment, and spectacular revenge.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/1184/1184-h/1184-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#fa709a,#fee140)">🌹</div>
+      <div class="cc-body">
+        <div class="cc-title">Jane Eyre</div>
+        <div class="cc-author">Charlotte Brontë · 1847</div>
+        <div class="cc-desc">A passionate orphan governess falls in love with her mysterious employer.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/1260/1260-h/1260-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb)">⚡</div>
+      <div class="cc-body">
+        <div class="cc-title">Frankenstein</div>
+        <div class="cc-author">Mary Shelley · 1818</div>
+        <div class="cc-desc">A scientist creates life raising profound questions about humanity and morality.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/84/84-h/84-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#fccb90,#d57eeb)">🎭</div>
+      <div class="cc-body">
+        <div class="cc-title">The Picture of Dorian Gray</div>
+        <div class="cc-author">Oscar Wilde · 1890</div>
+        <div class="cc-desc">A young man sells his soul for eternal beauty while his portrait ages.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/174/174-h/174-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">🗼</div>
+      <div class="cc-body">
+        <div class="cc-title">Les Misérables</div>
+        <div class="cc-author">Victor Hugo · 1862</div>
+        <div class="cc-desc">Ex-convict Jean Valjean's redemption across post-revolutionary France.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/135/135-h/135-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#f7971e,#ffd200)">🥂</div>
+      <div class="cc-body">
+        <div class="cc-title">The Great Gatsby</div>
+        <div class="cc-author">F. Scott Fitzgerald · 1925</div>
+        <div class="cc-desc">The tragic story of Jay Gatsby and his obsession in the Jazz Age.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/64317/64317-h/64317-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ROW: MOTIVATION -->
   <div class="classics-row-label" style="margin-top:40px">🌟 Motivation & Self-Help</div>
   <div class="classics-row">
-    <a href="https://www.gutenberg.org/files/2680/2680-h/2680-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#30cfd0,#330867)">🏛️</div>
-      <div class="cc-info"><div class="cc-title">Meditations</div><div class="cc-author">Marcus Aurelius · 180 AD</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
-    <a href="https://www.gutenberg.org/files/5658/5658-h/5658-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#a1c4fd,#c2e9fb)">💭</div>
-      <div class="cc-info"><div class="cc-title">As a Man Thinketh</div><div class="cc-author">James Allen · 1903</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
-    <a href="https://www.gutenberg.org/files/132/132-h/132-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#f83600,#f9d423)">🗡️</div>
-      <div class="cc-info"><div class="cc-title">The Art of War</div><div class="cc-author">Sun Tzu · 500 BC</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
-    <a href="https://www.gutenberg.org/files/205/205-h/205-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#56ab2f,#a8e063)">🌲</div>
-      <div class="cc-info"><div class="cc-title">Walden</div><div class="cc-author">Henry David Thoreau · 1854</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
-    <a href="https://www.gutenberg.org/files/2376/2376-h/2376-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#ee9ca7,#ffdde1)">✊</div>
-      <div class="cc-info"><div class="cc-title">Up from Slavery</div><div class="cc-author">Booker T. Washington · 1901</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
-    <a href="https://www.gutenberg.org/files/4094/4094-h/4094-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#ffecd2,#fcb69f)">☯️</div>
-      <div class="cc-info"><div class="cc-title">The Analects</div><div class="cc-author">Confucius · 475 BC</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#30cfd0,#330867)">🏛️</div>
+      <div class="cc-body">
+        <div class="cc-title">Meditations</div>
+        <div class="cc-author">Marcus Aurelius · 180 AD</div>
+        <div class="cc-desc">Stoic wisdom, resilience, and virtuous living from a Roman Emperor.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/2680/2680-h/2680-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#a1c4fd,#c2e9fb)">💭</div>
+      <div class="cc-body">
+        <div class="cc-title">As a Man Thinketh</div>
+        <div class="cc-author">James Allen · 1903</div>
+        <div class="cc-desc">The power of thought and how mindset shapes our character and life.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/5658/5658-h/5658-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#f83600,#f9d423)">🗡️</div>
+      <div class="cc-body">
+        <div class="cc-title">The Art of War</div>
+        <div class="cc-author">Sun Tzu · 500 BC</div>
+        <div class="cc-desc">Ancient strategy on leadership and competition beyond the battlefield.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/132/132-h/132-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#56ab2f,#a8e063)">🌲</div>
+      <div class="cc-body">
+        <div class="cc-title">Walden</div>
+        <div class="cc-author">Henry David Thoreau · 1854</div>
+        <div class="cc-desc">A meditation on simple living, nature, and self-discovery.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/205/205-h/205-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#ee9ca7,#ffdde1)">✊</div>
+      <div class="cc-body">
+        <div class="cc-title">Up from Slavery</div>
+        <div class="cc-author">Booker T. Washington · 1901</div>
+        <div class="cc-desc">Rising from slavery to found the Tuskegee Institute — a true inspiration.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/2376/2376-h/2376-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#ffecd2,#fcb69f)">☯️</div>
+      <div class="cc-body">
+        <div class="cc-title">The Analects</div>
+        <div class="cc-author">Confucius · 475 BC</div>
+        <div class="cc-desc">Sayings of Confucius — a guide to ethics and moral living.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/4094/4094-h/4094-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ROW: PHILOSOPHY & BIOGRAPHY -->
   <div class="classics-row-label" style="margin-top:40px">🧠 Philosophy & Biography</div>
   <div class="classics-row">
-    <a href="https://www.gutenberg.org/files/1497/1497-h/1497-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#4776e6,#8e54e9)">🏺</div>
-      <div class="cc-info"><div class="cc-title">The Republic</div><div class="cc-author">Plato · 380 BC</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
-    <a href="https://www.gutenberg.org/files/4363/4363-h/4363-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#373b44,#4286f4)">⚡</div>
-      <div class="cc-info"><div class="cc-title">Beyond Good and Evil</div><div class="cc-author">Friedrich Nietzsche · 1886</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
-    <a href="https://www.gutenberg.org/files/20203/20203-h/20203-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#c94b4b,#4b134f)">🦅</div>
-      <div class="cc-info"><div class="cc-title">Autobiography of Benjamin Franklin</div><div class="cc-author">Benjamin Franklin · 1791</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
-    <a href="https://www.gutenberg.org/files/54836/54836-h/54836-h.htm" target="_blank" class="classic-card">
-      <div class="cc-icon" style="background:linear-gradient(135deg,#ff9a9e,#fecfef)">☮️</div>
-      <div class="cc-info"><div class="cc-title">My Experiments with Truth</div><div class="cc-author">Mahatma Gandhi · 1927</div></div>
-      <div class="cc-read">Read →</div>
-    </a>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#4776e6,#8e54e9)">🏺</div>
+      <div class="cc-body">
+        <div class="cc-title">The Republic</div>
+        <div class="cc-author">Plato · 380 BC</div>
+        <div class="cc-desc">Plato's masterwork on justice, the ideal state and the philosopher-king.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/1497/1497-h/1497-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#373b44,#4286f4)">⚡</div>
+      <div class="cc-body">
+        <div class="cc-title">Beyond Good and Evil</div>
+        <div class="cc-author">Friedrich Nietzsche · 1886</div>
+        <div class="cc-desc">Nietzsche challenges conventional morality and explores the nature of values.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/4363/4363-h/4363-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#c94b4b,#4b134f)">🦅</div>
+      <div class="cc-body">
+        <div class="cc-title">Autobiography of Benjamin Franklin</div>
+        <div class="cc-author">Benjamin Franklin · 1791</div>
+        <div class="cc-desc">The witty life of America's founding father — scientist, statesman, inventor.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/20203/20203-h/20203-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="classic-card">
+      <div class="cc-image-area" style="background:linear-gradient(135deg,#ff9a9e,#fecfef)">☮️</div>
+      <div class="cc-body">
+        <div class="cc-title">My Experiments with Truth</div>
+        <div class="cc-author">Mahatma Gandhi · 1927</div>
+        <div class="cc-desc">Gandhi's remarkable journey from shy lawyer to the father of a nation.</div>
+        <div class="cc-buttons">
+          <a href="https://www.gutenberg.org/files/54836/54836-h/54836-h.htm" target="_blank" class="cc-btn-read">📖 Read Now</a>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -582,17 +724,46 @@ footer { background-color: #050505; padding: 40px 20px; text-align: center; bord
   <div class="contact-info">
     <h3>Get In Touch</h3>
     <p style="color:#aaa;line-height:1.8;margin-bottom:16px">
-      Have questions about our library? Need help finding a book? 
+      Have questions about our library? Need help finding a book?
       We're here to help you access knowledge freely.
     </p>
-    <p style="color:#aaa">📧 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="abc7c2c9d9cad9d2ebcfc2ccc2dfcac7c7c2c9d9cad9d285c8c4c6">[email&#160;protected]</a></p>
+    <p style="color:#aaa">📧 mbabaziemma295@gmail.com</p>
     <p style="color:#aaa">📍 Kigali, Rwanda</p>
+    <div style="margin-top:24px;padding:16px;background:rgba(255,99,71,0.08);border:1px solid rgba(255,99,71,0.2);border-radius:10px;">
+      <p style="color:#ff9a7b;font-size:0.85rem;line-height:1.7">
+        ⚡ Message izajya <strong>kuri Gmail yacu</strong> recto — tusubiza vuba!
+      </p>
+    </div>
   </div>
-  <form class="contact-form" action="/submit-form" method="POST">
-    <input type="text" name="name" placeholder="Your Name" required>
-    <input type="email" name="email" placeholder="Email Address" required>
-    <textarea name="message" rows="4" placeholder="Your message..." style="width:100%;padding:12px;background:#0a0a0a;border:1px solid #333;color:white;border-radius:5px;box-sizing:border-box;font-family:Poppins,sans-serif;margin-bottom:15px;resize:vertical"></textarea>
-    <button type="submit" class="submit-btn">Send Message →</button>
+
+  <!-- EmailJS Form -->
+  <form class="contact-form" id="contactForm">
+    <div style="position:relative">
+      <input type="text" id="cf_name" placeholder="Amazina yawe" required
+             style="width:100%;padding:12px 16px;background:#0f0f0f;border:1px solid #333;color:white;border-radius:8px;font-family:Poppins,sans-serif;margin-bottom:12px;box-sizing:border-box;transition:0.3s;outline:none">
+    </div>
+    <div style="position:relative">
+      <input type="email" id="cf_email" placeholder="Email yawe" required
+             style="width:100%;padding:12px 16px;background:#0f0f0f;border:1px solid #333;color:white;border-radius:8px;font-family:Poppins,sans-serif;margin-bottom:12px;box-sizing:border-box;transition:0.3s;outline:none">
+    </div>
+    <div style="position:relative">
+      <input type="text" id="cf_subject" placeholder="Insanganyamatsiko (sujet)" required
+             style="width:100%;padding:12px 16px;background:#0f0f0f;border:1px solid #333;color:white;border-radius:8px;font-family:Poppins,sans-serif;margin-bottom:12px;box-sizing:border-box;transition:0.3s;outline:none">
+    </div>
+    <textarea id="cf_message" rows="5" placeholder="Ubutumwa bwawe..." required
+              style="width:100%;padding:12px 16px;background:#0f0f0f;border:1px solid #333;color:white;border-radius:8px;font-family:Poppins,sans-serif;margin-bottom:14px;resize:vertical;box-sizing:border-box;outline:none;transition:0.3s"></textarea>
+
+    <!-- Status messages -->
+    <div id="cf_success" style="display:none;background:rgba(76,175,80,0.15);border:1px solid rgba(76,175,80,0.4);border-radius:8px;padding:12px 16px;margin-bottom:12px;color:#81c784;font-size:0.9rem;text-align:center">
+      ✅ Message yoherejwe neza kuri Gmail yacu! Turagushinja.
+    </div>
+    <div id="cf_error" style="display:none;background:rgba(255,77,77,0.15);border:1px solid rgba(255,77,77,0.4);border-radius:8px;padding:12px 16px;margin-bottom:12px;color:#ff8080;font-size:0.9rem;text-align:center">
+      ❌ Habaye ikibazo — gerageza nanone cyangwa twandikire kuri: mbabaziemma295@gmail.com
+    </div>
+
+    <button type="submit" class="submit-btn" id="cf_btn">
+      <span id="cf_btn_text">📨 Ohereza Message →</span>
+    </button>
   </form>
 </div>
 
@@ -601,6 +772,89 @@ footer { background-color: #050505; padding: 40px 20px; text-align: center; bord
   <p>© 2026 Digital Library — Open Knowledge for Everyone</p>
   <p style="margin-top:8px;font-size:0.85rem">Built with ❤️ using Python Flask · Free to use · No sign-up required for reading</p>
 </footer>
+
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  // ── EmailJS Setup ───────────────────────────────────────────────
+  // INTAMBWE ZO GUHUZA EMAILJS:
+  // 1. Jya kuri https://www.emailjs.com/ → Create free account na Gmail yawe
+  // 2. Add Email Service → Hitamo Gmail → Kopi "Service ID" ushyire aha: YOUR_SERVICE_ID
+  // 3. Create Email Template → Shyiramo izi variables:
+  //      {{from_name}}  {{from_email}}  {{subject}}  {{message}}
+  //    Kopi "Template ID" ushyire aha: YOUR_TEMPLATE_ID
+  // 4. Account → API Keys → Kopi "Public Key" ushyire aha: YOUR_PUBLIC_KEY
+
+  const EMAILJS_SERVICE_ID  = 'service_nyjxk6c';
+  const EMAILJS_TEMPLATE_ID = 'template_q4xttra';
+  const EMAILJS_PUBLIC_KEY  = '-Jl237kkSNioYM57E';
+
+  emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name    = document.getElementById('cf_name').value.trim();
+    const email   = document.getElementById('cf_email').value.trim();
+    const subject = document.getElementById('cf_subject').value.trim();
+    const message = document.getElementById('cf_message').value.trim();
+
+    // Validate
+    if (!name || !email || !subject || !message) {
+      alert('Uzuza amakuru yose mbere yo kohereza!');
+      return;
+    }
+
+    const btn     = document.getElementById('cf_btn');
+    const btnText = document.getElementById('cf_btn_text');
+    const success = document.getElementById('cf_success');
+    const error   = document.getElementById('cf_error');
+
+    // Loading state
+    btn.disabled          = true;
+    btnText.textContent   = '⏳ Birashyirwa...';
+    success.style.display = 'none';
+    error.style.display   = 'none';
+
+    // Send via EmailJS — variables zihuje na template yawe
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      from_name:  name,
+      from_email: email,
+      subject:    subject,
+      message:    message,
+      // Extra aliases kugirango template yose ihuze
+      name:       name,
+      email:      email,
+      title:      subject,
+    }).then(function(response) {
+      console.log('EmailJS OK:', response.status, response.text);
+      success.style.display = 'block';
+      btnText.textContent   = '✅ Byoherejwe!';
+      // Reset form
+      document.getElementById('cf_name').value    = '';
+      document.getElementById('cf_email').value   = '';
+      document.getElementById('cf_subject').value = '';
+      document.getElementById('cf_message').value = '';
+      // Reset button after 5s
+      setTimeout(() => {
+        btn.disabled          = false;
+        btnText.textContent   = '📨 Ohereza Message →';
+        success.style.display = 'none';
+      }, 5000);
+    }, function(err) {
+      console.error('EmailJS Error:', JSON.stringify(err));
+      error.style.display   = 'block';
+      btn.disabled          = false;
+      btnText.textContent   = '📨 Ohereza Message →';
+    });
+  });
+
+  // Input focus styles
+  document.querySelectorAll('#contactForm input, #contactForm textarea').forEach(el => {
+    el.addEventListener('focus',  () => el.style.borderColor = 'tomato');
+    el.addEventListener('blur',   () => el.style.borderColor = '#333');
+  });
+</script>
 
 <!-- MODAL -->
 <div id="bookModal" class="modal">
@@ -613,7 +867,7 @@ footer { background-color: #050505; padding: 40px 20px; text-align: center; bord
 <!-- SCROLL TO TOP -->
 <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 const imgNovel      = "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=400";
 const imgMotivation = "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&q=80&w=400";
 const imgPhilo      = "https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&q=80&w=400";
@@ -811,6 +1065,7 @@ function openSideReader(url, title) {
     window.open(url, '_blank');
 }
 
+
 // Modal Logic
 function openModal(book) {
     const modalBody = document.getElementById('modal-body');
@@ -818,35 +1073,4 @@ function openModal(book) {
         <img src="${book.img}" alt="Book Cover">
         <div class="modal-details">
             <h2>${book.title}</h2>
-            <h4>By ${book.author} (${book.year})</h4>
-            <p><strong>Category:</strong> ${book.category}</p>
-            <p><strong>Continent:</strong> ${book.continent}</p>
-            <br>
-            <p>${book.desc}</p>
-            <div class="read-link" onclick="openSideReader('${book.readUrl}', '${book.title}')">Read Book Now</div>
-        </div>
-    `;
-    document.getElementById('bookModal').style.display = "block";
-}
-
-function closeModal() {
-    document.getElementById('bookModal').style.display = "none";
-}
-
-window.onclick = function(event) {
-    let modal = document.getElementById('bookModal');
-    if(event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
-// Initial Load
-renderBooks(books, 'genre');
-
-// Extra: update results count
-const _orig = renderBooks;
-function renderBooks(booksToRender, mode) {
-  _orig(booksToRender, mode);
-  const el = document.getElementById("resultsCount");
-  if (el) el.textContent = booksToRender && booksToRender.length > 0
-    ? `Showing ${booksToRender.length} book${booksToRender.lengt
+            <h4>
